@@ -6,21 +6,10 @@ const TabsLayout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarShowLabel: false,
-        tabBarItemStyle: {
-          width: "100%",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        },
+        tabBarActiveTintColor: "#fff",
+        tabBarInactiveTintColor: "#d6c6ff",
         tabBarStyle: {
           backgroundColor: "#0F0D23",
-          paddingBottom: 36,
-          height: 100,
-          position: "absolute",
-          overflow: "hidden",
-          borderWidth: 1,
-          borderColor: "#0F0D23",
         },
       }}
     >

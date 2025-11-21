@@ -7,11 +7,11 @@ interface TabIconProps {
 
 const TabIcon = ({ focused, icon }: TabIconProps) => {
   return (
-    <View className="mt-4">
+    <View className="my-4">
       <Image
         source={icon}
-        tintColor={focused ? "#A8B5DB" : "#fff"}
-        className="size-7"
+        tintColor={focused ? "#fff" : "#d6c6ff"}
+        className="size-6"
       />
     </View>
   );

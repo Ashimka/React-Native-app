@@ -1,11 +1,14 @@
 import React from "react";
 import { Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Garage = () => {
   return (
-    <View className="flex-1 mt-8">
-      <Text>Garage</Text>
-    </View>
+    <SafeAreaView className="flex-1 bg-bgDefault p-5">
+      <View>
+        <Text className=" text-white">Garage</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
