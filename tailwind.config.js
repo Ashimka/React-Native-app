@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: [
     "./app/**/*.{js,jsx,ts,tsx}",
     "./assets/**/*.{js,jsx,ts,tsx}",
@@ -9,19 +10,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        bgDefault: "#2d3183",
-        primary: "#030014",
-        secondary: "#151312",
-        light: {
-          100: "#d6c6ff",
-          200: "#a8b5db",
-          300: "#9ca4ab",
-        },
-        dark: {
-          100: "#221f3d",
-          200: "#0f0d23",
-        },
-        accent: "#ab8bff",
+        // light
+        "bg-light": "#FFFFFF",
+        "surface-light": "#F7F7FA",
+        "primary-light": "#0B5FFF",
+        "secondary-light": "#6B7280",
+        "muted-light": "#9CA3AF",
+        "border-light": "#E6E7EB",
+        // dark
+        "bg-dark": "#0B1020",
+        "surface-dark": "#0F1724",
+        "primary-dark": "#60A5FA",
+        "secondary-dark": "#9CA3AF",
+        "muted-dark": "#6B7280",
+        "border-dark": "#1F2937",
+      },
+      fontFamily: {
+        sans: ["Inter", "System"],
       },
     },
   },

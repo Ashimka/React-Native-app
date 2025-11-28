@@ -9,7 +9,8 @@ const TabsLayout = () => {
         tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: "#d6c6ff",
         tabBarStyle: {
-          backgroundColor: "#0F0D23",
+          backgroundColor: "#0F1724",
+          height: 100,
         },
       }}
     >
@@ -54,5 +55,3 @@ const TabsLayout = () => {
 };
 
 export default TabsLayout;
-
-// Тайм код видео 58:28
