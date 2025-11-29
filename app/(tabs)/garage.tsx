@@ -54,13 +54,13 @@ const Garage = () => {
           <CarBrands onClose={onCloseBrand} onBrandSelect={handleBrandSelect} />
         )}
 
-        {showCarModels && selectedBrand ? (
+        {showCarModels && selectedBrand && (
           <CarModels
             brands={selectedBrand}
             onClose={onCloseModel}
             onModelSelect={handleModelSelect}
           />
-        ) : null}
+        )}
       </View>
     </SafeAreaView>
   );
