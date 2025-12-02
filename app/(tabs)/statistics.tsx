@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const Statistics = () => {
   return (
-    <SafeAreaView className="flex-1 bg-bg-dark p-5">
+    <SafeAreaView className="flex-1 bg-slate-600 p-5">
       <View>
         <Text className=" text-white">Статистика</Text>
       </View>

@@ -10,7 +10,7 @@ const TabIcon = ({ focused, icon }: TabIconProps) => {
     <>
       <Image
         source={icon}
-        tintColor={focused ? "#fff" : "#d6c6ff"}
+        tintColor={focused ? "#60A5FA" : "#fff"}
         className="size-6"
       />
     </>

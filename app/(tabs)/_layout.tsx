@@ -6,10 +6,10 @@ const TabsLayout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#fff",
-        tabBarInactiveTintColor: "#d6c6ff",
+        tabBarActiveTintColor: "#60a5fA",
+        tabBarInactiveTintColor: "#fff",
         tabBarStyle: {
-          backgroundColor: "#0F1724",
+          backgroundColor: "#303136",
           height: 100,
         },
       }}

@@ -16,7 +16,7 @@ type Props = {
   label: string;
   icon?: ReactNode;
   onPress?: (e: GestureResponderEvent) => void;
-  disabled: boolean;
+  disabled?: boolean;
   theme?: Theme;
   size?: Size;
   // дополнительные стили контейнера и текста (необяз.)
