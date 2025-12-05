@@ -36,7 +36,7 @@ const Garage = () => {
   const isModalVisible = showCarBrands || (showCarModels && selectedBrand);
 
   return (
-    <View className="flex-1 bg-slate-600">
+    <View className="flex-1 bg-slate-600 pt-14">
       <View className="flex-1 px-3">
         <Text className="text-surface-light text-2xl mx-auto">Гараж</Text>
         {!isModalVisible && (

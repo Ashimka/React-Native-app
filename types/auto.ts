@@ -7,3 +7,11 @@ export interface Brand {
   popular?: boolean;
   models: Model[];
 }
+export interface CarData {
+  car: string;
+  year?: number;
+  mileage?: number;
+  color?: string;
+  fuelType?: string;
+  transmission?: string;
+}

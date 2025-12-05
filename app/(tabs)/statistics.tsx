@@ -6,7 +6,7 @@ const Statistics = () => {
   return (
     <SafeAreaView className="flex-1 bg-slate-600 p-5">
       <View>
-        <Text className=" text-white">Статистика</Text>
+        <Text className=" text-surface-light text-2xl mx-auto">Статистика</Text>
       </View>
     </SafeAreaView>
   );

@@ -73,7 +73,7 @@ const CarBrands = ({ onClose, onBrandSelect }: CarBrandsProps) => {
   // Компонент футера
   const ListFooterComponent = React.useCallback(
     () => (
-      <TouchableOpacity className="mt-4 items-center" onPress={handleShowAll}>
+      <TouchableOpacity className="my-4 items-center" onPress={handleShowAll}>
         <Text className="text-primary-dark text-sm">
           {!showAll && "Показать все"}
         </Text>
