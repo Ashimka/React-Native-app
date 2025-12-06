@@ -1,3 +1,4 @@
+import useCarStore from "@/stores/carStore";
 import { CarData } from "@/types/auto";
 import React, { useState } from "react";
 import { TextInput, View } from "react-native";
@@ -25,6 +26,8 @@ const EditCarModal = ({
     null
   );
 
+  const { addCar } = useCarStore();
+
   const [carFuelType, setCarFuelType] = useState([
     { label: "Бензин", value: "Бензин" },
     { label: "Гибрид", value: "Гибрид" },
@@ -50,6 +53,7 @@ const EditCarModal = ({
   const handleSave = () => {
     if (modalData) {
       onSave(modalData);
+      addCar(modalData);
       onClose();
     }
   };
