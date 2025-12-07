@@ -5,6 +5,7 @@ import Button from "@/components/Button";
 import CarBrands from "@/components/CarBrands";
 import CarInfo from "@/components/CarInfo";
 import CarModels from "@/components/CarModels";
+import useCarStore from "@/stores/carStore";
 import { Brand } from "@/types/auto";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -12,7 +13,7 @@ const Garage = () => {
   const [showCarBrands, setShowCarBrands] = React.useState(false);
   const [showCarModels, setShowCarModels] = React.useState(false);
   const [selectedBrand, setSelectedBrand] = React.useState<Brand | null>(null);
-  const [selectedModel, setSelectedModel] = React.useState<string[]>([]);
+  const { addCar, carData } = useCarStore();
 
   const onCloseBrand = () => {
     setShowCarBrands(false);
@@ -28,7 +29,16 @@ const Garage = () => {
   };
 
   const handleModelSelect = (model: string) => {
-    setSelectedModel([...selectedModel, model]);
+    // Создаем объект CarData и добавляем в стор
+    addCar({
+      car: model,
+      year: 0,
+      mileage: 0,
+      color: "Белый",
+      fuelType: "Бензин",
+      transmission: "Ручная",
+    });
+
     onCloseModel();
   };
 
@@ -42,7 +52,7 @@ const Garage = () => {
         {!isModalVisible && (
           <View className="mt-4 flex-row justify-between items-center">
             <Text className="text-surface-light text-xl">
-              {selectedModel.length > 1 ? "Мои авто" : "Мой авто"}
+              {carData.length > 1 ? "Мои авто" : "Мой авто"}
             </Text>
             <Button
               onPress={() => setShowCarBrands(true)}
@@ -65,11 +75,11 @@ const Garage = () => {
           />
         )}
         {/* Показываем список авто только если НЕ открыты модальные окна */}
-        {!isModalVisible && selectedModel.length > 0 && (
+        {!isModalVisible && carData.length > 0 && (
           <ScrollView className="mt-4">
-            {selectedModel.map((model) => (
-              <React.Fragment key={model}>
-                <CarInfo car={model} />
+            {carData.map((car, index) => (
+              <React.Fragment key={`${car.car}-${index}`}>
+                <CarInfo car={car.car} />
               </React.Fragment>
             ))}
           </ScrollView>

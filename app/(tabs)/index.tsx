@@ -8,9 +8,9 @@ const Iindex = () => {
   const { carData } = useCarStore();
 
   return (
-    <SafeAreaView className="flex-1 bg-bg-dark p-5">
+    <SafeAreaView className="flex-1 bg-slate-600 pt-5">
       <ScrollView
-        className="flex-1 px-5"
+        className="flex-1 px-4"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ minHeight: "100%", paddingBottom: 10 }}
       >
@@ -20,11 +20,14 @@ const Iindex = () => {
             Авто дневник
           </Text>
         </View>
-        <View className="flex-row gap-2">
+        <View className="flex-col gap-2 mt-3">
           {carData.map((item, ind) => (
-            <Text key={ind} className="text-surface-light">
-              {item.car}
-            </Text>
+            <React.Fragment key={ind}>
+              <View className="bg-surface-light dark:bg-surface-dark rounded-lg p-4 my-3 border border-border-light dark:border-border-dark">
+                <Text className="text-surface-light text-lg">{item.car}</Text>
+                <Text className="text-surface-light">{item.year} year</Text>
+              </View>
+            </React.Fragment>
           ))}
         </View>
       </ScrollView>

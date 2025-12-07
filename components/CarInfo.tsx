@@ -1,6 +1,7 @@
+import useCarStore from "@/stores/carStore";
 import { CarData } from "@/types/auto";
 import { AntDesign } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import EditCarModal from "./EditCarModal";
 
@@ -10,28 +11,19 @@ interface CarInfoProps {
 
 const CarInfo = ({ car }: CarInfoProps) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalData, setModalData] = useState<CarData | null>(null);
+  const { carData: storeCarData } = useCarStore();
 
-  const [carData, setCarData] = useState<CarData[]>([
-    {
-      car,
-      year: 0,
-      mileage: 0,
-      color: "Белый",
-      fuelType: "Бензин",
-      transmission: "Ручная",
-    },
-  ]);
+  // Находим машину в сторе по названию
+  const carData = useMemo(() => {
+    return storeCarData.filter((item) => item.car === car);
+  }, [storeCarData, car]);
 
   const handleOpenModal = (auto: CarData) => {
-    setModalData(auto);
     setModalVisible(true);
   };
 
   const handleSave = (data: CarData) => {
-    setCarData((prev) =>
-      prev.map((item) => (item.car === data.car ? data : item))
-    );
+    // Сохранение обрабатывается в EditCarModal через updateCar
   };
 
   return (
@@ -104,12 +96,14 @@ const CarInfo = ({ car }: CarInfoProps) => {
           </React.Fragment>
         ))}
 
-      <EditCarModal
-        visible={modalVisible}
-        carData={modalData}
-        onClose={() => setModalVisible(false)}
-        onSave={handleSave}
-      />
+      {carData.length > 0 && (
+        <EditCarModal
+          visible={modalVisible}
+          carData={carData[0]}
+          onClose={() => setModalVisible(false)}
+          onSave={handleSave}
+        />
+      )}
     </View>
   );
 };
