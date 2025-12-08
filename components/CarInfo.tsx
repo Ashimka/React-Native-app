@@ -11,12 +11,12 @@ interface CarInfoProps {
 
 const CarInfo = ({ car }: CarInfoProps) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { carData: storeCarData } = useCarStore();
+  const { cars: storeCars } = useCarStore();
 
   // Находим машину в сторе по названию
   const carData = useMemo(() => {
-    return storeCarData.filter((item) => item.car === car);
-  }, [storeCarData, car]);
+    return storeCars.filter((item) => item.car === car);
+  }, [storeCars, car]);
 
   const handleOpenModal = (auto: CarData) => {
     setModalVisible(true);

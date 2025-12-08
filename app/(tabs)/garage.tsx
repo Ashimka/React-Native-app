@@ -13,7 +13,7 @@ const Garage = () => {
   const [showCarBrands, setShowCarBrands] = React.useState(false);
   const [showCarModels, setShowCarModels] = React.useState(false);
   const [selectedBrand, setSelectedBrand] = React.useState<Brand | null>(null);
-  const { addCar, carData } = useCarStore();
+  const { cars } = useCarStore();
 
   const onCloseBrand = () => {
     setShowCarBrands(false);
@@ -30,14 +30,22 @@ const Garage = () => {
 
   const handleModelSelect = (model: string) => {
     // Создаем объект CarData и добавляем в стор
-    addCar({
+    useCarStore.getState().addCar({
       car: model,
       year: 0,
       mileage: 0,
-      color: "Белый",
-      fuelType: "Бензин",
-      transmission: "Ручная",
+      color: "",
+      fuelType: "",
+      transmission: "",
     });
+    // addCar({
+    //   car: model,
+    //   year: 0,
+    //   mileage: 0,
+    //   color: "Белый",
+    //   fuelType: "Бензин",
+    //   transmission: "Ручная",
+    // });
 
     onCloseModel();
   };
@@ -52,7 +60,7 @@ const Garage = () => {
         {!isModalVisible && (
           <View className="mt-4 flex-row justify-between items-center">
             <Text className="text-surface-light text-xl">
-              {carData.length > 1 ? "Мои авто" : "Мой авто"}
+              {cars.length > 1 ? "Мои авто" : "Мой авто"}
             </Text>
             <Button
               onPress={() => setShowCarBrands(true)}
@@ -75,10 +83,10 @@ const Garage = () => {
           />
         )}
         {/* Показываем список авто только если НЕ открыты модальные окна */}
-        {!isModalVisible && carData.length > 0 && (
+        {!isModalVisible && cars.length > 0 && (
           <ScrollView className="mt-4">
-            {carData.map((car, index) => (
-              <React.Fragment key={`${car.car}-${index}`}>
+            {cars.map((car) => (
+              <React.Fragment key={car.id}>
                 <CarInfo car={car.car} />
               </React.Fragment>
             ))}

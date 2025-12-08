@@ -8,10 +8,12 @@ export interface Brand {
   models: Model[];
 }
 export interface CarData {
+  id: string;
   car: string;
   year?: number;
   mileage?: number;
   color?: string;
   fuelType?: string;
   transmission?: string;
+  createdAt?: string;
 }

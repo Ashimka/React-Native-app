@@ -26,7 +26,7 @@ const EditCarModal = ({
     null
   );
 
-  const { updateCar, carData: storeCarData } = useCarStore();
+  const { updateCar, cars: storeCars } = useCarStore();
 
   const [carFuelType, setCarFuelType] = useState([
     { label: "Бензин", value: "Бензин" },
@@ -52,12 +52,10 @@ const EditCarModal = ({
 
   const handleSave = () => {
     if (modalData && carData) {
-      // Находим индекс машины в сторе по исходному названию
-      const carIndex = storeCarData.findIndex(
-        (item) => item.car === carData.car
-      );
+      // Находим машину в сторе по ID
+      const car = storeCars.find((item) => item.id === carData.id);
 
-      if (carIndex !== -1) {
+      if (car) {
         // Вычисляем обновления (только измененные поля)
         const updates: Partial<CarData> = {
           car: modalData.car,
@@ -67,7 +65,7 @@ const EditCarModal = ({
           fuelType: modalData.fuelType,
           transmission: modalData.transmission,
         };
-        updateCar(carIndex, updates);
+        updateCar(car.id, updates);
       }
 
       onSave(modalData);
