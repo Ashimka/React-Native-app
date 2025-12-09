@@ -22,9 +22,9 @@ const CarInfo = ({ car }: CarInfoProps) => {
     setModalVisible(true);
   };
 
-  const handleSave = (data: CarData) => {
-    // Сохранение обрабатывается в EditCarModal через updateCar
-  };
+  // const handleSave = (data: CarData) => {
+  //   // Сохранение обрабатывается в EditCarModal через updateCar
+  // };
 
   return (
     <View className="bg-surface-light dark:bg-surface-dark rounded-lg p-4 my-3 border border-border-light dark:border-border-dark">
@@ -101,7 +101,6 @@ const CarInfo = ({ car }: CarInfoProps) => {
           visible={modalVisible}
           carData={carData[0]}
           onClose={() => setModalVisible(false)}
-          onSave={handleSave}
         />
       )}
     </View>

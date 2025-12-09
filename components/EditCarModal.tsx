@@ -1,3 +1,4 @@
+import fileStorageService from "@/services/fileStorage";
 import useCarStore from "@/stores/carStore";
 import { CarData } from "@/types/auto";
 import React, { useState } from "react";
@@ -9,15 +10,9 @@ interface EditCarModalProps {
   visible: boolean;
   carData: CarData | null;
   onClose: () => void;
-  onSave: (data: CarData) => void;
 }
 
-const EditCarModal = ({
-  visible,
-  carData,
-  onClose,
-  onSave,
-}: EditCarModalProps) => {
+const EditCarModal = ({ visible, carData, onClose }: EditCarModalProps) => {
   const [modalData, setModalData] = useState<CarData | null>(carData);
   const [openFuel, setOpenFuel] = useState(false);
   const [openTr, setOpenTr] = useState(false);
@@ -50,7 +45,7 @@ const EditCarModal = ({
     }
   }, [carData]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (modalData && carData) {
       // Находим машину в сторе по ID
       const car = storeCars.find((item) => item.id === carData.id);
@@ -67,8 +62,8 @@ const EditCarModal = ({
         };
         updateCar(car.id, updates);
       }
-
-      onSave(modalData);
+      await fileStorageService.saveCars(storeCars);
+      console.log({ storeCars });
       onClose();
     }
   };

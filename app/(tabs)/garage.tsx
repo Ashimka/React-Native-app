@@ -38,18 +38,9 @@ const Garage = () => {
       fuelType: "",
       transmission: "",
     });
-    // addCar({
-    //   car: model,
-    //   year: 0,
-    //   mileage: 0,
-    //   color: "Белый",
-    //   fuelType: "Бензин",
-    //   transmission: "Ручная",
-    // });
 
     onCloseModel();
   };
-
   // Проверяем, показываются ли сейчас модальные окна
   const isModalVisible = showCarBrands || (showCarModels && selectedBrand);
 
