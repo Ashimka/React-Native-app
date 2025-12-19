@@ -60,10 +60,19 @@ const EditCarModal = ({ visible, carData, onClose }: EditCarModalProps) => {
           fuelType: modalData.fuelType,
           transmission: modalData.transmission,
         };
+
+        // Обновляем машину в сторе
         updateCar(car.id, updates);
+
+        // Вычисляем обновленный массив машин локально
+        const updatedCars = storeCars.map((item) =>
+          item.id === car.id ? { ...item, ...updates } : item
+        );
+
+        // Сохраняем обновленный массив в файл
+        await fileStorageService.saveCars(updatedCars);
+        console.log({ updatedCars });
       }
-      await fileStorageService.saveCars(storeCars);
-      console.log({ storeCars });
       onClose();
     }
   };
