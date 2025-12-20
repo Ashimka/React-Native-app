@@ -17,3 +17,10 @@ export interface CarData {
   transmission?: string;
   createdAt?: string;
 }
+export interface PostData {
+  carId: string;
+  type: string;
+  description: string;
+  cost?: number;
+  createdAt: string;
+}

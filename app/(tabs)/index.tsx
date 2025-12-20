@@ -1,13 +1,25 @@
-import Button from "@/components/Button";
-import { icons } from "@/constants/icons";
-import fileStorageService from "@/services/fileStorage";
-import useCarStore from "@/stores/carStore";
-import React from "react";
+import React, { useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Iindex = () => {
+import Button from "@/components/Button";
+import { icons } from "@/constants/icons";
+
+import fileStorageService from "@/services/fileStorage";
+
+import AddPostModal from "@/components/AddPostModal";
+import useCarStore from "@/stores/carStore";
+
+const Index = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [idCar, setIdCar] = useState("");
+
   const { cars, clearCars } = useCarStore();
+
+  const openModal = (id: string) => {
+    setModalVisible(true);
+    setIdCar(id);
+  };
 
   const getAllCars = async () => {
     const allCars = await fileStorageService.loadCars();
@@ -37,10 +49,16 @@ const Iindex = () => {
           {cars.map((item) => (
             <React.Fragment key={item.id}>
               <View className="bg-surface-light dark:bg-surface-dark rounded-lg p-4 my-3 border border-border-light dark:border-border-dark">
-                <Text className="text-surface-light text-lg">{item.car}</Text>
-                <Text className="text-surface-light">
-                  {item.year} год выпуска
-                </Text>
+                <View className="flex-row items-center gap-4 mb-4">
+                  <Text className="text-surface-light text-lg">{item.car}</Text>
+                  <Text className="text-surface-light">{item.year} г</Text>
+                </View>
+                <Button
+                  onPress={() => openModal(item.id)}
+                  label="Добавить запись"
+                  size="small"
+                  theme="light"
+                />
               </View>
             </React.Fragment>
           ))}
@@ -49,9 +67,16 @@ const Iindex = () => {
           <Button onPress={getAllCars} label="Get auto" theme="primary" />
           <Button onPress={deleteAllCars} label="Delete all" theme="primary" />
         </View>
+        {modalVisible && (
+          <AddPostModal
+            visible={modalVisible}
+            carId={idCar}
+            onClose={() => setModalVisible(false)}
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Iindex;
+export default Index;

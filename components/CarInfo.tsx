@@ -1,5 +1,4 @@
 import useCarStore from "@/stores/carStore";
-import { CarData } from "@/types/auto";
 import { AntDesign } from "@expo/vector-icons";
 import React, { useMemo, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -18,14 +17,6 @@ const CarInfo = ({ car }: CarInfoProps) => {
     return storeCars.filter((item) => item.car === car);
   }, [storeCars, car]);
 
-  const handleOpenModal = (auto: CarData) => {
-    setModalVisible(true);
-  };
-
-  // const handleSave = (data: CarData) => {
-  //   // Сохранение обрабатывается в EditCarModal через updateCar
-  // };
-
   return (
     <View className="bg-surface-light dark:bg-surface-dark rounded-lg p-4 my-3 border border-border-light dark:border-border-dark">
       {carData &&
@@ -40,7 +31,7 @@ const CarInfo = ({ car }: CarInfoProps) => {
                   </Text>
                   <TouchableOpacity
                     className="p-2"
-                    onPress={() => handleOpenModal(item)}
+                    onPress={() => setModalVisible(true)}
                   >
                     <AntDesign name="edit" size={24} color="#6B7280" />
                   </TouchableOpacity>
