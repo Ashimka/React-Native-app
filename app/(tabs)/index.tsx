@@ -8,11 +8,18 @@ import { icons } from "@/constants/icons";
 import fileStorageService from "@/services/fileStorage";
 
 import AddPostModal from "@/components/AddPostModal";
+import AuthModal from "@/components/AuthModal";
+import {
+  authServiceLogin,
+  authServiceVerifyCode,
+} from "@/services/auth/auth.service";
 import useCarStore from "@/stores/carStore";
 
 const Index = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [idCar, setIdCar] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [modalAuthVisible, setModalAuthVisible] = useState(false);
 
   const { cars, clearCars } = useCarStore();
 
@@ -23,6 +30,7 @@ const Index = () => {
 
   const getAllCars = async () => {
     const allCars = await fileStorageService.loadCars();
+    setIsAuthenticated(false);
 
     console.log({ allCars });
   };
@@ -30,6 +38,22 @@ const Index = () => {
   const deleteAllCars = async () => {
     clearCars();
     await fileStorageService.clearData();
+  };
+
+  const handleAuthenticate = () => {
+    // Открываем модальное окно авторизации (ввод email для отправки кода)
+    setModalAuthVisible(true);
+  };
+
+  const handleSendCode = async (email: string) => {
+    await authServiceLogin({ email });
+    console.log("Send code to:", email);
+  };
+
+  const handleVerifyCode = async (email: string, code: string) => {
+    const result = await authServiceVerifyCode(email, code);
+    console.log("Verify code result:", result);
+    setIsAuthenticated(true);
   };
 
   return (
@@ -41,9 +65,16 @@ const Index = () => {
       >
         <View className="flex-row items-center justify-between">
           <Image source={icons.logo} className="size-10" />
-          <Text className="text-2xl font-bold text-surface-light">
-            Авто дневник
-          </Text>
+          {isAuthenticated ? (
+            <Image source={icons.auto} className="size-10 rounded-full" />
+          ) : (
+            <Text
+              onPress={handleAuthenticate}
+              className="text-xl font-bold text-surface-light"
+            >
+              Войти
+            </Text>
+          )}
         </View>
         <View className="flex-col gap-2 mt-3">
           {cars.map((item) => (
@@ -74,6 +105,12 @@ const Index = () => {
             onClose={() => setModalVisible(false)}
           />
         )}
+        <AuthModal
+          visible={modalAuthVisible}
+          onClose={() => setModalAuthVisible(false)}
+          onSend={handleSendCode}
+          onVerify={handleVerifyCode}
+        />
       </ScrollView>
     </SafeAreaView>
   );
