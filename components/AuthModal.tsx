@@ -14,6 +14,7 @@ const AuthModal = ({ visible, onClose, onSend, onVerify }: AuthModalProps) => {
   const [code, setCode] = useState("");
   const [step, setStep] = useState<"email" | "sending" | "code">("email");
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (!visible) {
@@ -21,6 +22,7 @@ const AuthModal = ({ visible, onClose, onSend, onVerify }: AuthModalProps) => {
       setCode("");
       setStep("email");
       setLoading(false);
+      setErrorMessage(null);
     }
   }, [visible]);
 
@@ -43,12 +45,22 @@ const AuthModal = ({ visible, onClose, onSend, onVerify }: AuthModalProps) => {
 
       try {
         setLoading(true);
+        setErrorMessage(null);
         setStep("sending");
         await onSend(email);
         setStep("code");
-      } catch (error) {
-        console.error("Ошибка отправки кода", error);
-        Alert.alert("Ошибка", "Не удалось отправить код. Попробуйте позже");
+      } catch (error: any) {
+        // console.error("Ошибка отправки кода", error);
+        // Попробуем извлечь текст ошибки от сервера
+        const serverMsg =
+          error?.response?.data?.message ||
+          error?.response?.data?.error ||
+          (typeof error?.response?.data === "string"
+            ? error.response.data
+            : null) ||
+          error?.message ||
+          "Не удалось отправить код. Попробуйте позже";
+        setErrorMessage(String(serverMsg));
         setStep("email");
       } finally {
         setLoading(false);
@@ -60,14 +72,23 @@ const AuthModal = ({ visible, onClose, onSend, onVerify }: AuthModalProps) => {
       }
       try {
         setLoading(true);
+        setErrorMessage(null);
         if (onVerify) {
           await onVerify(email, code);
         }
         // после успешной проверки можно закрывать модалку
         onClose();
-      } catch (err) {
-        console.error("Ошибка верификации кода", err);
-        Alert.alert("Ошибка", "Неверный код или проблема сети");
+      } catch (err: any) {
+        // console.error("Ошибка верификации кода", err);
+        const serverMsg =
+          err?.response?.data?.message ||
+          err?.response?.data?.error ||
+          (typeof err?.response?.data === "string"
+            ? err.response.data
+            : null) ||
+          err?.message ||
+          "Неверный код или проблема сети";
+        setErrorMessage(String(serverMsg));
       } finally {
         setLoading(false);
       }
@@ -86,7 +107,7 @@ const AuthModal = ({ visible, onClose, onSend, onVerify }: AuthModalProps) => {
           : step === "email"
             ? "Дальше"
             : step === "code"
-              ? "Войти"
+              ? "Подтвердить код"
               : ""
       }
     >
@@ -133,8 +154,22 @@ const AuthModal = ({ visible, onClose, onSend, onVerify }: AuthModalProps) => {
               placeholder="123456"
               keyboardType="numeric"
             />
+            <Text
+              className="text-sm text-primary-light text-center mt-2"
+              onPress={() => {
+                // возвращаемся на шаг ввода email, очищаем код и сообщение об ошибке
+                setStep("email");
+                setCode("");
+                setErrorMessage(null);
+              }}
+            >
+              Получить новый код
+            </Text>
           </>
         )}
+        {errorMessage ? (
+          <Text className="text-sm text-red-500 mt-2">{errorMessage}</Text>
+        ) : null}
       </View>
     </BaseModal>
   );
