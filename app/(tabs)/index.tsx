@@ -13,6 +13,7 @@ import {
   authServiceLogin,
   authServiceVerifyCode,
 } from "@/services/auth/auth.service";
+import { tokenService } from "@/services/auth/token.service";
 import useCarStore from "@/stores/carStore";
 
 const Index = () => {
@@ -53,6 +54,22 @@ const Index = () => {
   const handleVerifyCode = async (email: string, code: string) => {
     const result = await authServiceVerifyCode(email, code);
     console.log("Verify code result:", result);
+
+    if (result?.tokens) {
+      const { accessToken, refreshToken } = result.tokens;
+      if (accessToken && refreshToken) {
+        // Сохранить refresh token в SecureStore
+        await tokenService.saveRefreshToken(refreshToken);
+        // Сохранить access token в памяти
+        tokenService.saveAccessToken(accessToken);
+        console.log("Tokens saved successfully");
+      } else {
+        console.warn("Access or refresh token not found in response");
+      }
+    } else {
+      console.warn("Tokens object not found in response");
+    }
+
     setIsAuthenticated(true);
   };
 
