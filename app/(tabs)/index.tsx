@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -13,16 +13,22 @@ import {
   authServiceLogin,
   authServiceVerifyCode,
 } from "@/services/auth/auth.service";
-import { tokenService } from "@/services/auth/token.service";
+import { useAuthStore } from "@/stores/authStore";
 import useCarStore from "@/stores/carStore";
 
 const Index = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [idCar, setIdCar] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [modalAuthVisible, setModalAuthVisible] = useState(false);
 
+  const { isAuthenticated, login, logout, checkAuth } = useAuthStore();
+
   const { cars, clearCars } = useCarStore();
+
+  // Проверка авторизации при старте
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   const openModal = (id: string) => {
     setModalVisible(true);
@@ -31,7 +37,6 @@ const Index = () => {
 
   const getAllCars = async () => {
     const allCars = await fileStorageService.loadCars();
-    setIsAuthenticated(false);
 
     console.log({ allCars });
   };
@@ -58,10 +63,8 @@ const Index = () => {
     if (result?.tokens) {
       const { accessToken, refreshToken } = result.tokens;
       if (accessToken && refreshToken) {
-        // Сохранить refresh token в SecureStore
-        await tokenService.saveRefreshToken(refreshToken);
-        // Сохранить access token в памяти
-        tokenService.saveAccessToken(accessToken);
+        // Сохранить токены через store
+        await login({ accessToken, refreshToken });
         console.log("Tokens saved successfully");
       } else {
         console.warn("Access or refresh token not found in response");
@@ -69,8 +72,6 @@ const Index = () => {
     } else {
       console.warn("Tokens object not found in response");
     }
-
-    setIsAuthenticated(true);
   };
 
   return (
@@ -83,7 +84,12 @@ const Index = () => {
         <View className="flex-row items-center justify-between">
           <Image source={icons.logo} className="size-10" />
           {isAuthenticated ? (
-            <Image source={icons.auto} className="size-10 rounded-full" />
+            <View className="flex-row items-center gap-2">
+              <Image source={icons.auto} className="size-10 rounded-full" />
+              <Text onPress={logout} className="text-sm text-red-500">
+                Выйти
+              </Text>
+            </View>
           ) : (
             <Text
               onPress={handleAuthenticate}
